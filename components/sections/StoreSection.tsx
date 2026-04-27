@@ -1,15 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
-const EXTERIOR = [
+const IMAGES = [
   '/store/exterior/exterior-1.jpg',
   '/store/exterior/exterior-2.jpg',
   '/store/exterior/exterior-3.jpg',
-]
-
-const INTERIOR = [
   '/store/interior/interior_01.jpg',
   '/store/interior/interior_02.jpg',
   '/store/interior/interior_03.jpg',
@@ -19,37 +16,59 @@ const INTERIOR = [
 ]
 
 function ImageSlider({ images, label }: { images: string[]; label: string }) {
-  const [index, setIndex] = useState(0)
-  const [dir, setDir] = useState(0) // -1: left, 1: right
-  const [sliding, setSliding] = useState(false)
+  const [current, setCurrent] = useState(0)
+  const [nextIdx, setNextIdx] = useState<number | null>(null)
+  const [dir, setDir] = useState(0)
+  const [animating, setAnimating] = useState(false)
+  const busy = useRef(false)
 
-  const go = (next: number, direction: number) => {
-    if (sliding) return
+  const go = (to: number, direction: number) => {
+    if (busy.current || to === current) return
+    busy.current = true
     setDir(direction)
-    setSliding(true)
-    setTimeout(() => {
-      setIndex(next)
-      setSliding(false)
-    }, 400)
+    setNextIdx(to)
+    // 다음 프레임에 애니메이션 시작 (초기 위치 렌더 후)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setAnimating(true)
+        setTimeout(() => {
+          setCurrent(to)
+          setNextIdx(null)
+          setAnimating(false)
+          busy.current = false
+        }, 450)
+      })
+    })
   }
 
-  const prev = () => go((index - 1 + images.length) % images.length, -1)
-  const next = () => go((index + 1) % images.length, 1)
+  const prev = () => go((current - 1 + images.length) % images.length, -1)
+  const next = () => go((current + 1) % images.length, 1)
 
   return (
     <div className="relative aspect-[4/3] overflow-hidden bg-[#f0f0f0] group">
+      {/* 현재 이미지 */}
       <div
-        className="absolute inset-0 transition-transform duration-400 ease-in-out"
-        style={{ transform: sliding ? `translateX(${dir * -100}%)` : 'translateX(0%)' }}
+        className="absolute inset-0"
+        style={{
+          transform: animating ? `translateX(${dir * -100}%)` : 'translateX(0%)',
+          transition: animating ? 'transform 450ms ease-in-out' : 'none',
+        }}
       >
-        <Image
-          src={images[index]}
-          alt={`${label} ${index + 1}`}
-          fill
-          className="object-cover"
-          unoptimized
-        />
+        <Image src={images[current]} alt={`${label} ${current + 1}`} fill className="object-cover" unoptimized />
       </div>
+      {/* 다음 이미지 */}
+      {nextIdx !== null && (
+        <div
+          className="absolute inset-0"
+          style={{
+            transform: animating ? 'translateX(0%)' : `translateX(${dir * 100}%)`,
+            transition: animating ? 'transform 450ms ease-in-out' : 'none',
+            willChange: 'transform',
+          }}
+        >
+          <Image src={images[nextIdx]} alt={`${label} ${nextIdx + 1}`} fill className="object-cover" unoptimized />
+        </div>
+      )}
       {/* 라벨 */}
       <div className="absolute top-4 left-4 z-10 font-futura text-[11px] tracking-[0.1em] uppercase bg-black/50 text-white px-2 py-1">
         {label}
@@ -59,8 +78,8 @@ function ImageSlider({ images, label }: { images: string[]; label: string }) {
         {images.map((_, i) => (
           <button
             key={i}
-            onClick={() => go(i, i > index ? 1 : -1)}
-            className={`w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-white scale-125' : 'bg-white/50'}`}
+            onClick={() => go(i, i > current ? 1 : -1)}
+            className={`w-1.5 h-1.5 rounded-full transition-all ${i === current ? 'bg-white scale-125' : 'bg-white/50'}`}
           />
         ))}
       </div>
@@ -107,9 +126,8 @@ export function StoreSection() {
       </div>
 
       {/* 이미지 슬라이더 */}
-      <div className="grid grid-cols-2 gap-px bg-[#e0e0e0] -mx-16">
-        <ImageSlider images={EXTERIOR} label="Exterior" />
-        <ImageSlider images={INTERIOR} label="Interior" />
+      <div className="-mx-16">
+        <ImageSlider images={IMAGES} label="oh, lolly day! Seongsu" />
       </div>
     </section>
   )
