@@ -55,10 +55,10 @@ export function Sidebar() {
     >
       {/* 로고 */}
       <div className="px-6 py-8 border-b border-[#333]">
-        <span className="font-bold text-[20px] tracking-[-0.01em] text-[#c5e800] leading-tight block">
+        <span className="font-bold text-[20px] tracking-[-0.01em] text-white leading-tight block">
           oh, lolly day!
         </span>
-        <span className="text-[12px] tracking-[0.05em] text-[#c5e800] uppercase">
+        <span className="text-[12px] tracking-[0.05em] text-white uppercase">
           Brand Identity Guide
         </span>
       </div>
