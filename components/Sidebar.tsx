@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 
 const NAV = [
   {
-    title: 'OH, LOLLY DAY!',
+    title: '',
     items: [
       { label: 'SLOGAN', id: 'slogan' },
+      { label: 'CORE VALUE', id: 'corevalue' },
       { label: 'CAMPAIGN', id: 'campaign' },
       { label: 'COLLABORATION', id: 'collaboration' },
       { label: 'STORE', id: 'store' },
@@ -34,7 +35,7 @@ export function Sidebar() {
       if (!el) return
       const ob = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) setActiveId(id) },
-        { rootMargin: '-40% 0px -55% 0px' }
+        { rootMargin: '-20% 0px -70% 0px' }
       )
       ob.observe(el)
       observers.push(ob)
@@ -43,21 +44,22 @@ export function Sidebar() {
   }, [])
 
   const scrollTo = (id: string) => {
+    setActiveId(id)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
     <aside
-      className="fixed top-0 left-0 h-screen overflow-y-auto border-r border-[#e0e0e0] bg-white z-40 flex flex-col"
+      className="fixed top-0 left-0 h-screen overflow-y-auto border-r border-[#333] bg-black z-40 flex flex-col font-futura"
       style={{ width: 'var(--sidebar-width)' }}
     >
       {/* 로고 */}
-      <div className="px-6 py-8 border-b border-[#e0e0e0]">
-        <span className="font-bold text-[13px] tracking-[0.05em] text-black uppercase leading-tight block" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          OH, LOLLY DAY!
+      <div className="px-6 py-8 border-b border-[#333]">
+        <span className="font-bold text-[20px] tracking-[-0.01em] text-[#c5e800] leading-tight block">
+          oh, lolly day!
         </span>
-        <span className="text-[11px] tracking-[0.05em] text-[#6b6b6b] uppercase" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Brand Guide
+        <span className="text-[12px] tracking-[0.05em] text-[#c5e800] uppercase">
+          Brand Identity Guide
         </span>
       </div>
 
@@ -65,21 +67,18 @@ export function Sidebar() {
       <nav className="flex-1 px-4 py-6 space-y-6">
         {NAV.map((group) => (
           <div key={group.title}>
-            <p className="text-[10px] font-bold tracking-[0.1em] text-[#6b6b6b] uppercase mb-3 px-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              {group.title}
-            </p>
+            {group.title && <p className="text-[11px] font-bold tracking-[0.1em] text-[#c5e800] uppercase mb-3 px-2">{group.title}</p>}
             <ul className="space-y-0.5">
               {group.items.map((item) => (
                 <li key={item.id}>
                   <button
                     onClick={() => scrollTo(item.id)}
-                    className={`w-full text-left px-2 py-2 text-[12px] tracking-[0.05em] uppercase transition-all ${
+                    className={`w-full text-left px-2 py-2 text-[13px] tracking-[0.05em] uppercase transition-all ${
                       activeId === item.id
-                        ? 'text-black font-bold border-l-2 border-black pl-3'
-                        : 'text-[#6b6b6b] hover:text-black border-l-2 border-transparent pl-3'
+                        ? 'text-[#ff6000] font-bold border-l-2 border-[#ff6000] pl-3'
+                        : 'text-[#c5e800] hover:text-[#ff6000] border-l-2 border-transparent pl-3'
                     }`}
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  >
+                                      >
                     {item.label}
                   </button>
                 </li>
@@ -90,10 +89,10 @@ export function Sidebar() {
       </nav>
 
       {/* 하단 */}
-      <div className="px-6 py-4 border-t border-[#e0e0e0]">
-        <p className="text-[9px] tracking-[0.06em] text-[#c0c0c0] uppercase" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          © 2026 ROLLYJOSS COMPANY
-        </p>
+      <div className="px-6 py-4 border-t border-[#333]">
+        <p className="font-futura text-[13px] tracking-[0.06em] text-[#c5e800] uppercase leading-none">롤리조쓰컴퍼니</p>
+        <p className="font-futura text-[12px] tracking-[0.05em] text-[#c5e800]/50 uppercase leading-none mt-2">Seoul, Korea · Est. 2016</p>
+        <p className="text-[11px] tracking-[0.06em] text-[#c5e800]/30 uppercase leading-none mt-2">© 2026</p>
       </div>
     </aside>
   )

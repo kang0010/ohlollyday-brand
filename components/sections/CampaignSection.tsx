@@ -1,136 +1,157 @@
-import { SectionHeader } from '../SectionHeader'
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+
+function useCountUp(target: number, duration = 2000) {
+  const [count, setCount] = useState(0)
+  const ref = useRef<HTMLDivElement>(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true
+        const start = performance.now()
+        const tick = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1)
+          const eased = 1 - Math.pow(1 - progress, 3)
+          setCount(Math.floor(eased * target))
+          if (progress < 1) requestAnimationFrame(tick)
+        }
+        requestAnimationFrame(tick)
+      }
+    }, { threshold: 0.5 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [target, duration])
+
+  return { count, ref }
+}
 
 const CAMPAIGNS = [
   {
-    year: '2025',
-    slogan: 'NO SWEAT, NO HAPPINESS',
-    theme: '땀을 흘리는 순간의 행복',
-    description: '편리함과 효율을 중시하는 시대에도 기꺼이 땀을 흘리며 자신만의 행복을 찾아가는 사람들을 이야기합니다. 노력, 설렘, 원동력, 기쁨—땀이 가진 다양한 의미를 발견합니다.',
-    bg: '#000000',
-    text: '#F5C842',
-  },
-  {
-    year: '2024',
-    slogan: 'WELCOME TO HAPPINESS ISLAND',
-    theme: '웰컴 투 행복도',
-    description: '오롤리데이 10주년을 맞아, 충성 팬들을 위한 가상의 섬 개념을 만들었습니다. 제품 중심이 아닌 팬 중심의 경험을 선물하는 캠페인.',
-    bg: '#7AB5A0',
+    year: '2021',
+    slogan: 'LUCKY < HAPPY < HAPPIER',
+    theme: '운보다 행복, 행복보다 더 행복',
+    bg: '#F26B5B',
     text: '#ffffff',
-  },
-  {
-    year: '2023',
-    slogan: 'WHAT MAKES ME HAPPY?',
-    theme: '나를 행복하게 하는 것',
-    description: '당신은 무엇을 통해 일상에서 행복을 느끼나요? 거창한 것이 아닌, 나만의 작고 소중한 행복의 순간들을 발견하는 캠페인.',
-    bg: '#F5C842',
-    text: '#000000',
+    url: 'https://www.oh-lolly-day.com/oh-lolly-day/campaign/2021.html',
+    img: '/campaign-2021.jpg',
   },
   {
     year: '2022',
     slogan: 'GOOD REST, HAPPIER LIFE',
     theme: '잘 쉬어야 더 행복해',
-    description: '더 행복한 삶을 위해서는 열심히 하는 것만큼 제대로 쉬어가는 순간도 꼭 필요합니다. 나만의 휴식 방식을 발견하는 캠페인.',
     bg: '#F5F0E8',
     text: '#000000',
+    url: 'https://www.oh-lolly-day.com/oh-lolly-day/campaign/2022.html',
+    img: '/campaign-2022.jpg',
+    imgScale: 'scale-150',
+    imgPosition: 'object-[center_35%]',
   },
   {
-    year: '2021',
-    slogan: 'LUCKY < HAPPY < HAPPIER',
-    theme: '운보다 행복, 행복보다 더 행복',
-    description: '행운을 좇기 위해 멀리 가지 마세요. 행복은 생각보다 더 가까이에 있을지도 몰라요. 7주년을 맞아 지금 이 순간의 행복에 집중하는 캠페인.',
-    bg: '#F26B5B',
+    year: '2023',
+    slogan: 'WHAT MAKES ME HAPPY?',
+    theme: '나를 행복하게 하는 것',
+    bg: '#F5C842',
+    text: '#000000',
+    url: 'https://www.oh-lolly-day.com/oh-lolly-day/campaign/2023.html',
+    img: '/campaign-2023.jpg',
+  },
+  {
+    year: '2024',
+    slogan: 'WELCOME TO HAPPINESS ISLAND',
+    theme: '웰컴 투 행복도',
+    bg: '#7AB5A0',
     text: '#ffffff',
+    url: 'https://www.oh-lolly-day.com/oh-lolly-day/campaign/2024.html',
+    img: '/campaign-2024.png',
+  },
+  {
+    year: '2025',
+    slogan: 'NO SWEAT, NO HAPPINESS',
+    theme: '땀을 흘리는 순간의 행복',
+    bg: '#000000',
+    text: '#F5C842',
+    url: 'https://www.oh-lolly-day.com/oh-lolly-day/campaign/2025.html',
+    img: '/campaign-2025.jpg',
+    imgScale: 'scale-150',
+    imgPosition: 'object-[center_20%]',
   },
 ]
 
 export function CampaignSection() {
-  return (
-    <section id="campaign" className="px-16 py-20 border-b border-[#e0e0e0]">
-      <SectionHeader
-        number="02"
-        title="CAMPAIGN"
-        description="오롤리데이는 매년 5월 15일 창립기념일을 기점으로 비해피어 캠페인을 진행합니다. 매출액의 2%는 초록우산 어린이재단에 기부됩니다."
-      />
+  const { count, ref } = useCountUp(19941943, 2500)
+  const formatted = count.toLocaleString('ko-KR')
 
-      {/* 캠페인 철학 */}
-      <div className="grid grid-cols-2 gap-px bg-[#e0e0e0] mb-px">
-        <div className="bg-[#1A2B4A] p-10">
-          <p className="brand-card-label text-[#7AB5A0] mb-6">Campaign Concept</p>
-          <p className="font-futura font-bold text-[28px] text-white leading-[1.3] uppercase mb-4">
-            #비해피어<br />캠페인
-          </p>
-          <p className="text-[13px] text-[#a0b0c0] leading-[1.8]">
-            "행복... 그거 어떻게 하는 건데?"<br />
-            누구나 해피어가 될 수 있어!
-          </p>
-        </div>
-        <div className="bg-white p-10">
-          <p className="brand-card-label mb-6">Since 2016</p>
-          <div className="space-y-3">
-            {['2025', '2024', '2023', '2022', '2021', '2020–', '2016'].map((y, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <span className="font-futura font-bold text-[11px] tracking-[0.08em] text-[#6b6b6b] w-16">{y}</span>
-                <div className="flex-1 h-px bg-[#e0e0e0]" />
-              </div>
-            ))}
-          </div>
-        </div>
+  return (
+    <section id="campaign" className="px-16 pb-20 border-b border-[#e0e0e0]">
+      <div className="bg-[#c5e800] text-black px-16 py-12 mb-0 -mx-16">
+        <p className="font-futura font-bold text-[42px] leading-[1.2] tracking-[-0.01em] uppercase text-black">
+          BE HAPPIER CAMPAIGN
+        </p>
+        <p className="text-[16px] leading-[1.5] text-black mt-6">
+          오롤리데이는 매년 5월 15일 창립기념일을 기점으로 비해피어 캠페인을 진행합니다.<br />
+          매출액의 2%는 초록우산 어린이재단에 기부됩니다.<br />
+          <br />
+          "행복... 그거 어떻게 하는 건데?" 누구나 해피어가 될 수 있어!
+        </p>
       </div>
 
       {/* 연도별 캠페인 그리드 */}
-      <div className="grid grid-cols-1 gap-px bg-[#e0e0e0]">
+      <div className="grid grid-cols-3 gap-px bg-[#e0e0e0] -mx-16">
         {CAMPAIGNS.map((c) => (
-          <div
+          <a
             key={c.year}
-            className="flex items-stretch"
+            href={c.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative flex flex-col justify-between h-72 group overflow-hidden"
             style={{ background: c.bg }}
           >
-            {/* 연도 */}
-            <div className="w-32 flex items-center justify-center border-r shrink-0"
-              style={{ borderColor: c.text === '#ffffff' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)' }}>
-              <span className="font-futura font-bold text-[13px] tracking-[0.1em]"
-                style={{ color: c.text === '#ffffff' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.35)' }}>
+            {/* 배경 이미지 */}
+            <img
+              src={c.img}
+              alt={c.slogan}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${c.imgScale ?? ''} ${c.imgPosition ?? 'object-center'}`}
+            />
+            {/* 기본: 연도 중앙 */}
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 transition-opacity duration-300 group-hover:opacity-0">
+              <span className="font-futura font-light text-[120px] text-white drop-shadow-lg tracking-[-0.04em]">
                 {c.year}
               </span>
             </div>
-            {/* 슬로건 */}
-            <div className="flex-1 px-10 py-8">
-              <p className="font-futura font-bold text-[24px] leading-[1.2] uppercase mb-2"
-                style={{ color: c.text }}>
+            {/* 호버: 어두운 오버레이 + 캠페인 정보 */}
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-8 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <p className="font-futura font-bold text-[28px] leading-[1.2] uppercase mb-3 text-white drop-shadow-lg">
                 {c.slogan}
               </p>
-              <p className="text-[12px] font-semibold mb-3"
-                style={{ color: c.text === '#ffffff' ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.45)' }}>
-                {c.theme}
-              </p>
-              <p className="text-[12px] leading-[1.7] max-w-lg"
-                style={{ color: c.text === '#ffffff' ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.6)' }}>
-                {c.description}
-              </p>
+              <p className="text-[16px] text-white/80 drop-shadow-md">{c.theme}</p>
             </div>
-          </div>
+            {/* 링크 아이콘 */}
+            <span className="absolute top-6 right-6 z-20 text-[18px] text-white opacity-60">↗</span>
+          </a>
         ))}
+        {/* 빈 슬롯 */}
+        <div className="relative flex items-center justify-center h-72 bg-[#ff6000]">
+          <p className="font-futura font-bold text-[36px] text-black">to be continued...</p>
+        </div>
       </div>
 
-      {/* 사회공헌 */}
-      <div className="mt-px bg-[#e0e0e0] h-px" />
-      <div className="flex gap-px bg-[#e0e0e0] mt-px">
-        <div className="flex-1 bg-white p-8">
-          <p className="brand-card-label mb-3">Social Contribution</p>
-          <p className="text-[16px] font-semibold text-black mb-2">매출의 2%를 기부합니다</p>
-          <p className="text-[13px] text-[#6b6b6b] leading-[1.7]">
-            오롤리데이는 회사 매출액의 2%를 초록우산 어린이재단에 기부하여
-            보호 대상 아동과 청소년의 자립을 지원합니다.
-          </p>
+      {/* 기부 누적 정보 */}
+      <div ref={ref} className="flex items-center justify-between px-16 py-10 bg-black -mx-16">
+        <div className="translate-y-[3px]">
+          <p className="text-[16px] font-semibold text-[#ff6000] mb-0 ml-[5px]">초록우산 총 누적 기부액</p>
+          <p className="font-futura font-bold text-[48px] text-[#c5e800]">{formatted}원</p>
         </div>
-        <div className="flex-1 bg-white p-8 border-l border-[#e0e0e0]">
-          <p className="brand-card-label mb-3">Campaign Day</p>
-          <p className="text-[16px] font-semibold text-black mb-2">5월 15일</p>
-          <p className="text-[13px] text-[#6b6b6b] leading-[1.7]">
-            오롤리데이 창립기념일. 매년 이 날을 기점으로 비해피어 캠페인이 시작됩니다.
-          </p>
+        <div className="translate-y-[3px]">
+          <p className="text-[12px] font-bold tracking-[0.12em] text-[#c5e800]/50 uppercase mb-1 text-right"></p>
+          <p className="font-futura font-medium text-[28px] text-[#c5e800]">21.05.15 – 24.03.31</p>
         </div>
       </div>
+
     </section>
   )
 }

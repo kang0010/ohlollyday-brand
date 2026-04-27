@@ -18,29 +18,32 @@ const COLLABS = [
 
 export function CollaborationSection() {
   return (
-    <section id="collaboration" className="px-16 py-20 border-b border-[#e0e0e0]">
-      <SectionHeader
-        number="03"
-        title="COLLABORATION"
-        description="오롤리데이의 세계관에 공감하는 브랜드들과 함께 만든 특별한 제품들. 콜라보레이션은 오롤리데이의 가치를 더 많은 사람에게 전달하는 방법입니다."
-      />
+    <section id="collaboration" className="px-16 pb-20 border-b border-[#e0e0e0]">
+      <div className="bg-[#c5e800] text-black px-16 py-12 mb-0 -mx-16">
+        <p className="font-futura font-bold text-[42px] leading-[1.2] tracking-[0.02em] uppercase text-black">
+          COLLABORATION
+        </p>
+        <p className="text-[16px] leading-[1.5] text-black mt-6">
+          오롤리데이의 세계관에 공감하는 브랜드들과 함께 만든 특별한 제품들.<br />
+          콜라보레이션은 오롤리데이의 가치를 더 많은 사람에게 전달하는 방법입니다.
+        </p>
+      </div>
 
       {/* 콜라보 그리드 */}
-      <div className="grid grid-cols-4 gap-px bg-[#e0e0e0]">
+      <div className="grid grid-cols-3 gap-px bg-[#e0e0e0] -mx-16">
         {COLLABS.map((c) => (
           <div key={c.brand} className="bg-white group overflow-hidden">
-            <div className="relative aspect-square overflow-hidden bg-[#f0f0f0]">
+            <div className="overflow-hidden bg-[#f0f0f0]">
               <Image
                 src={c.img}
                 alt={c.brand}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                width={0}
+                height={0}
+                sizes="33vw"
+                className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
                 unoptimized
                 referrerPolicy="no-referrer"
               />
-            </div>
-            <div className="px-4 py-3 border-t border-[#e0e0e0]">
-              <p className="font-futura font-bold text-[11px] tracking-[0.08em] uppercase text-black">{c.brand}</p>
             </div>
           </div>
         ))}
