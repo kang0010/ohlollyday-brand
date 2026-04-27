@@ -6,7 +6,7 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
 :root {
-  --sidebar-width: 240px;
+  --sidebar-width: 280px;
 }
 
 * {

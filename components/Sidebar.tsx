@@ -4,17 +4,17 @@ import { useState, useEffect } from 'react'
 
 const NAV = [
   {
-    title: '',
+    title: 'BRAND INTRODUCTION',
     items: [
       { label: 'SLOGAN', id: 'slogan' },
       { label: 'CORE VALUE', id: 'corevalue' },
       { label: 'CAMPAIGN', id: 'campaign' },
       { label: 'COLLABORATION', id: 'collaboration' },
-      { label: 'STORE', id: 'store' },
+      { label: 'OH, LOLLY DAY! SEONGSU', id: 'store' },
     ],
   },
   {
-    title: 'BRAND RESOURCE',
+    title: 'DESIGN GUIDE',
     items: [
       { label: 'LOGO AND SYMBOL', id: 'logo' },
       { label: 'COLOR PALETTE', id: 'color' },
@@ -54,12 +54,9 @@ export function Sidebar() {
       style={{ width: 'var(--sidebar-width)' }}
     >
       {/* 로고 */}
-      <div className="px-6 py-8 border-b border-[#333]">
-        <span className="font-bold text-[20px] tracking-[-0.01em] text-white leading-tight block">
+      <div className="px-6 py-8 border-b border-[#333] flex justify-center">
+        <span className="font-bold text-[24px] tracking-[0.02em] text-white leading-tight">
           oh, lolly day!
-        </span>
-        <span className="text-[12px] tracking-[0.05em] text-white uppercase">
-          Brand Identity Guide
         </span>
       </div>
 

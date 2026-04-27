@@ -87,8 +87,8 @@ export function CampaignSection() {
   const formatted = count.toLocaleString('ko-KR')
 
   return (
-    <section id="campaign" className="px-16 pb-20 border-b border-[#e0e0e0]">
-      <div className="bg-[#c5e800] text-black px-16 py-12 mb-0 -mx-16">
+    <section id="campaign" className="px-16">
+      <div className="bg-[#c5e800] text-black px-16 py-20 mb-0 -mx-16">
         <p className="font-futura font-bold text-[42px] leading-[1.2] tracking-[-0.01em] uppercase text-black">
           BE HAPPIER CAMPAIGN
         </p>
@@ -135,13 +135,13 @@ export function CampaignSection() {
           </a>
         ))}
         {/* 빈 슬롯 */}
-        <div className="relative flex items-center justify-center h-72 bg-[#ff6000]">
+        <div className="relative flex items-center justify-center h-72 bg-[#e8e8e8]">
           <p className="font-futura font-bold text-[36px] text-black">to be continued...</p>
         </div>
       </div>
 
       {/* 기부 누적 정보 */}
-      <div ref={ref} className="flex items-center justify-between px-16 py-10 bg-black -mx-16">
+      <div ref={ref} className="flex items-center justify-between px-16 py-20 bg-black -mx-16">
         <div className="translate-y-[3px]">
           <p className="text-[16px] font-semibold text-[#ff6000] mb-0 ml-[5px]">초록우산 총 누적 기부액</p>
           <p className="font-futura font-bold text-[48px] text-[#c5e800]">{formatted}원</p>

@@ -17,9 +17,9 @@ export default function Home() {
 
         {/* 히어로 헤더 */}
         <div className="px-16 py-20">
-          <div className="flex items-start justify-between mb-10">
+          <div className="flex items-start justify-between mb-[52px]">
             <p className="font-futura font-bold text-[16px] tracking-[0.02em] text-[#6b6b6b] uppercase">
-              Brand Identity Guidelines
+              Brand Introduction & Design Guide
             </p>
           </div>
           <h1 className="font-futura font-bold text-[80px] leading-[0.95] tracking-[-0.03em] text-black">
